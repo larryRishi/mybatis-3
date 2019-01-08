@@ -61,22 +61,18 @@ public class XPathParser {
      * Xml Document对象
      */
     private final Document document;
-
     /**
      * 是否校验
      */
     private boolean validation;
-
     /**
      * Xml 实体解析器
      */
     private EntityResolver entityResolver;
-
     /**
-     * 变量Properties对象
+     * 变量 Properties对象
      */
     private Properties variables;
-
     /**
      * Java XPath对象
      */
@@ -142,6 +138,13 @@ public class XPathParser {
         this.document = document;
     }
 
+    /**
+     *
+     * @param xml xml文件地址
+     * @param validation 是否校验xml
+     * @param variables 变量Properties对象
+     * @param entityResolver Xml实体解析器
+     */
     public XPathParser(String xml, boolean validation, Properties variables, EntityResolver entityResolver) {
         commonConstructor(validation, variables, entityResolver);
         this.document = createDocument(new InputSource(new StringReader(xml)));
@@ -260,8 +263,9 @@ public class XPathParser {
     private Document createDocument(InputSource inputSource) {
         // important: this must only be called AFTER common constructor
         try {
+            //1. 创建DocumentBuilderFactory对象
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(validation);
+            factory.setValidating(validation); //设置是否验证xml
 
             factory.setNamespaceAware(false);
             factory.setIgnoringComments(true);
@@ -275,8 +279,9 @@ public class XPathParser {
                 factory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
             }
 
+            //2. 创建DocumentBuilder对象
             DocumentBuilder builder = factory.newDocumentBuilder();
-            builder.setEntityResolver(entityResolver);
+            builder.setEntityResolver(entityResolver); //设置实体解析器
             builder.setErrorHandler(new ErrorHandler() {
                 @Override
                 public void error(SAXParseException exception) throws SAXException {
@@ -292,7 +297,7 @@ public class XPathParser {
                 public void warning(SAXParseException exception) throws SAXException {
                 }
             });
-            return builder.parse(inputSource);
+            return builder.parse(inputSource); //解析Xml文件
         } catch (Exception e) {
             throw new BuilderException("Error creating document instance.  Cause: " + e, e);
         }
