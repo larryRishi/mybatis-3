@@ -22,6 +22,51 @@
 
 <configuration>
 
+    <properties resource="resources/test4MybatisConfig.properties" />
+
+    <!--<settings>
+        <setting name="localCacheScope" value="STATEMENT"/>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="lazyLoadingEnabled" value="true" />
+        <setting name="multipleResultSetsEnabled" value="true" />
+        <setting name="useColumnLabel" value="true" />
+        <setting name="useGeneratedKeys" value="false" />
+        <setting name="defaultExecutorType" value="REUSE" />
+        <setting name="defaultStatementTimeout" value="25000" />
+    </settings>-->
+
+    <!--类型别名；为Java类型设置短的名字，它只和Xml配置有关，存在的意义仅在于减少类完全限定名的冗余-->
+    <typeAliases>
+        <package name="com.rishi.test.domain"/>
+    </typeAliases>
+
+    <!--对象工厂-->
+    <!--
+
+        Mybatis每次创建结果对象的新实例时，它都会使用一个对象工厂实例来完成，
+        默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，
+        要么在参数映射存在的时候通过参数构造方法来实例化。如果想覆盖对象工厂的默认行为，
+        则可以通过创建自己的对象工厂来实现
+
+    -->
+    <objectFactory type="com.rishi.test.objectfactory.ExampleObjectFactory">
+        <property name="aaa" value="bb"/>
+    </objectFactory>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+
 
 </configuration>
 
