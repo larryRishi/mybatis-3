@@ -35,8 +35,8 @@ public class TypeParameterResolver {
    *         they will be resolved to the actual runtime {@link Type}s.
    */
   public static Type resolveFieldType(Field field, Type srcType) {
-    Type fieldType = field.getGenericType();
-    Class<?> declaringClass = field.getDeclaringClass();
+    Type fieldType = field.getGenericType();//获取字段的声明类型
+    Class<?> declaringClass = field.getDeclaringClass();//获取字段定义所在类的Class对象
     return resolveType(fieldType, srcType, declaringClass);
   }
 
@@ -64,6 +64,13 @@ public class TypeParameterResolver {
     return result;
   }
 
+  /**
+   * 解析类型
+   * @param type 字段，方法返回值或者方法参数的类型
+   * @param srcType 查找该字段，返回值或者方法参数的起始位置
+   * @param declaringClass 该字段，方法定义所在的类
+   * @return
+   */
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
     if (type instanceof TypeVariable) {
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);
@@ -93,10 +100,17 @@ public class TypeParameterResolver {
     }
   }
 
+  /**
+   * 解析属性Type
+   * @param parameterizedType 待解析的属性Type
+   * @param srcType 对应的ParameterizedType对象
+   * @param declaringClass
+   * @return
+   */
   private static ParameterizedType resolveParameterizedType(ParameterizedType parameterizedType, Type srcType, Class<?> declaringClass) {
-    Class<?> rawType = (Class<?>) parameterizedType.getRawType();
-    Type[] typeArgs = parameterizedType.getActualTypeArguments();
-    Type[] args = new Type[typeArgs.length];
+    Class<?> rawType = (Class<?>) parameterizedType.getRawType();//获取原始类型对应的class信息
+    Type[] typeArgs = parameterizedType.getActualTypeArguments();//获取实际类型参数，例如Map中的K , V
+    Type[] args = new Type[typeArgs.length];//用于保存解析后的结果
     for (int i = 0; i < typeArgs.length; i++) {
       if (typeArgs[i] instanceof TypeVariable) {
         args[i] = resolveTypeVar((TypeVariable<?>) typeArgs[i], srcType, declaringClass);

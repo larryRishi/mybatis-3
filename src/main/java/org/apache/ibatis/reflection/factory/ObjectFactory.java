@@ -26,12 +26,13 @@ import java.util.Properties;
 public interface ObjectFactory {
 
   /**
-   * Sets configuration properties.
+   * Sets configuration properties.设置配置信息
    * @param properties configuration properties
    */
   void setProperties(Properties properties);
 
   /**
+   * 利用默认的构造器创建一个新的对象
    * Creates a new object with default constructor. 
    * @param type Object type
    * @return
@@ -39,6 +40,7 @@ public interface ObjectFactory {
   <T> T create(Class<T> type);
 
   /**
+   * 根据参数列表创建对象
    * Creates a new object with the specified constructor and params.
    * @param type Object type
    * @param constructorArgTypes Constructor argument types
@@ -48,6 +50,7 @@ public interface ObjectFactory {
   <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs);
   
   /**
+   * 检测指定类型是否为集合类型
    * Returns true if this object can have a set of other objects.
    * It's main purpose is to support non-java.util.Collection objects like Scala collections.
    * 

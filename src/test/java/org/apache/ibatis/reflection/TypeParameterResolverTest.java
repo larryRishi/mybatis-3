@@ -36,6 +36,12 @@ import org.apache.ibatis.reflection.typeparam.Level2Mapper;
 import org.junit.Test;
 
 public class TypeParameterResolverTest {
+
+  @Test
+  public void testType() {
+    //Type
+  }
+
   @Test
   public void testReturn_Lv0SimpleClass() throws Exception {
     Class<?> clazz = Level0Mapper.class;
@@ -363,6 +369,10 @@ public class TypeParameterResolverTest {
     assertEquals(Object.class, result);
   }
 
+  /**
+   * 测试解析字段类型
+   * @throws Exception
+   */
   @Test
   public void testField_GenericField() throws Exception {
     Class<?> clazz = SubCalculator.class;

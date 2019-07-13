@@ -46,15 +46,16 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  */
 public class Reflector {
 
-  private final Class<?> type;
-  private final String[] readablePropertyNames;
-  private final String[] writeablePropertyNames;
-  private final Map<String, Invoker> setMethods = new HashMap<String, Invoker>();
-  private final Map<String, Invoker> getMethods = new HashMap<String, Invoker>();
-  private final Map<String, Class<?>> setTypes = new HashMap<String, Class<?>>();
-  private final Map<String, Class<?>> getTypes = new HashMap<String, Class<?>>();
-  private Constructor<?> defaultConstructor;
+  private final Class<?> type;//存储类信息
+  private final String[] readablePropertyNames;//可读属性数组
+  private final String[] writeablePropertyNames;//可写属性数组
+  private final Map<String, Invoker> setMethods = new HashMap<String, Invoker>();//记录相应属性的setter方法，key是属性名称
+  private final Map<String, Invoker> getMethods = new HashMap<String, Invoker>();//记录相应属性的getter方法
+  private final Map<String, Class<?>> setTypes = new HashMap<String, Class<?>>();//相应属性的setter方法参数值类型
+  private final Map<String, Class<?>> getTypes = new HashMap<String, Class<?>>();//相应属性的getter方法返回值类型
+  private Constructor<?> defaultConstructor;//默认的构造方法
 
+  //记录了所有属性名称的集合
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<String, String>();
 
   public Reflector(Class<?> clazz) {

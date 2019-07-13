@@ -28,45 +28,18 @@ public final class LogFactory {
    */
   public static final String MARKER = "MYBATIS";
 
+  /**
+   * 记录当前使用的第三方日日志组件所对应的的适配器的构造方法
+   */
   private static Constructor<? extends Log> logConstructor;
 
   static {
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useSlf4jLogging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useCommonsLogging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useLog4J2Logging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useLog4JLogging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useJdkLogging();
-      }
-    });
-    tryImplementation(new Runnable() {
-      @Override
-      public void run() {
-        useNoLogging();
-      }
-    });
+    tryImplementation(LogFactory::useSlf4jLogging);
+    tryImplementation(LogFactory::useCommonsLogging);
+    tryImplementation(LogFactory::useLog4J2Logging);
+    tryImplementation(LogFactory::useLog4JLogging);
+    tryImplementation(LogFactory::useJdkLogging);
+    tryImplementation(LogFactory::useNoLogging);
   }
 
   private LogFactory() {
