@@ -25,6 +25,7 @@ import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheException;
 
 /**
+ * 阻塞版本的缓存装饰器
  * Simple blocking decorator 
  * 
  * Simple and inefficient version of EhCache's BlockingCache decorator.
@@ -36,8 +37,13 @@ import org.apache.ibatis.cache.CacheException;
  */
 public class BlockingCache implements Cache {
 
+  /**
+   * 阻塞超时时长
+   */
   private long timeout;
+  //被装饰的底层cache对象
   private final Cache delegate;
+  //每个key都有对应的Lock锁
   private final ConcurrentHashMap<Object, ReentrantLock> locks;
 
   public BlockingCache(Cache delegate) {
@@ -68,7 +74,7 @@ public class BlockingCache implements Cache {
   public Object getObject(Object key) {
     acquireLock(key);
     Object value = delegate.getObject(key);
-    if (value != null) {
+    if (value != null) {//缓存中有key对应的缓存项，释放锁，否则继续持有锁
       releaseLock(key);
     }        
     return value;

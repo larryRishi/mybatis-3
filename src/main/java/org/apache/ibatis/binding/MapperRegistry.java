@@ -32,8 +32,13 @@ import java.util.Set;
  * @author Lasse Voss
  */
 public class MapperRegistry {
-
+  /**
+   * mybatis全局唯一的对象,其中包含了所有配置信息
+   */
   private final Configuration config;
+  /**
+   * 记录了Mapper接口与对应MapperProxyFactory之间的关系
+   */
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<Class<?>, MapperProxyFactory<?>>();
 
   public MapperRegistry(Configuration config) {
@@ -42,11 +47,13 @@ public class MapperRegistry {
 
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+    //查找指定type对应的MapperProxyFactory对象
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
     if (mapperProxyFactory == null) {
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
     }
     try {
+      //利用factory创建代理对象并且返回
       return mapperProxyFactory.newInstance(sqlSession);
     } catch (Exception e) {
       throw new BindingException("Error getting mapper instance. Cause: " + e, e);
@@ -57,9 +64,14 @@ public class MapperRegistry {
     return knownMappers.containsKey(type);
   }
 
+  /**
+   * 填充knowMappers集合
+   * @param type
+   * @param <T>
+   */
   public <T> void addMapper(Class<T> type) {
-    if (type.isInterface()) {
-      if (hasMapper(type)) {
+    if (type.isInterface()) {//检测是否是接口
+      if (hasMapper(type)) { //检查是否已经加载过
         throw new BindingException("Type " + type + " is already known to the MapperRegistry.");
       }
       boolean loadCompleted = false;
