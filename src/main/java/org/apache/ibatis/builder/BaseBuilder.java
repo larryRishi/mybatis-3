@@ -32,8 +32,17 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
+  /**
+   * 全局唯一的对象，mybatis几乎全部的配置信息会保存到configuration对象中
+   */
   protected final Configuration configuration;
+  /**
+   * 在mybatis-config.xml中配置的<typeAliases>定义的别名，会记录在此变量中
+   */
   protected final TypeAliasRegistry typeAliasRegistry;
+  /**
+   * 在mybatis-config.xml配置文件中使用的<typeHandlers>标签中定义的内容，会记录在此变量中
+   */
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {
@@ -145,6 +154,11 @@ public abstract class BaseBuilder {
     return handler;
   }
 
+  /**
+   * 进行别名的解析
+   * @param alias
+   * @return
+   */
   protected Class<?> resolveAlias(String alias) {
     return typeAliasRegistry.resolveAlias(alias);
   }

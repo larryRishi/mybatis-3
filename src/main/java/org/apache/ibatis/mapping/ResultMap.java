@@ -35,7 +35,8 @@ import org.apache.ibatis.session.Configuration;
 
 /**
  * @author Clinton Begin
- */
+ * 每个resultMap结点都会解析成一个ResultMap对象
+ * */
 public class ResultMap {
   private Configuration configuration;
 

@@ -27,23 +27,39 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin
+ * <resultMap></resultMap>结点下几乎每个节点都会解析成ResultMapping属性
  */
 public class ResultMapping {
 
+  //全局的configuration对象
   private Configuration configuration;
+  //对应实体类中的属性
   private String property;
+  //对应于实体类中属性映射的column
   private String column;
+  //对应属性类型的类信息
   private Class<?> javaType;
+  //对应数据库中对应的jdbc类型
   private JdbcType jdbcType;
+  //类型转换器
   private TypeHandler<?> typeHandler;
+  //引用另外一个resultMap节点的id
   private String nestedResultMapId;
+  //对应节点的<select>属性，该属性通过id引用另一个<select>结点定义
   private String nestedQueryId;
+  //对应notnull属性拆分后的结果
   private Set<String> notNullColumns;
+  //对应结点的columnPrefix属性
   private String columnPrefix;
+  //处理后的标志
   private List<ResultFlag> flags;
+  //对应结点的column属性拆分后生成的结果，=
   private List<ResultMapping> composites;
+  //对应结点的resultSet属性
   private String resultSet;
+
   private String foreignColumn;
+  //是否延时加载
   private boolean lazy;
 
   ResultMapping() {

@@ -53,9 +53,21 @@ import org.apache.ibatis.type.TypeHandler;
  */
 public class XMLConfigBuilder extends BaseBuilder {
 
+  /**
+   * 标识是否已解析过xml文件
+   */
   private boolean parsed;
+  /**
+   * 用于解析mybatis-config.xml配置文件的
+   */
   private final XPathParser parser;
+  /**
+   * 配置的名称
+   */
   private String environment;
+  /**
+   * 用于创建和缓存Reflector对象
+   */
   private final ReflectorFactory localReflectorFactory = new DefaultReflectorFactory();
 
   public XMLConfigBuilder(Reader reader) {
@@ -103,17 +115,28 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void parseConfiguration(XNode root) {
     try {
       //issue #117 read properties first
+      //解析<properties>结点
       propertiesElement(root.evalNode("properties"));
+      //解析<setting>结点
       Properties settings = settingsAsProperties(root.evalNode("settings"));
+      //设置vfsImpl字段
       loadCustomVfs(settings);
+      //解析typeAliases结点
       typeAliasesElement(root.evalNode("typeAliases"));
+      //解析plugins结点
       pluginElement(root.evalNode("plugins"));
+      //解析objectFactory结点
       objectFactoryElement(root.evalNode("objectFactory"));
+      //解析objectWrapperFactory结点
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+      //解析reflectorFactory结点
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+      //将setting值设置到configuration中
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
+      //解析environmens结点
       environmentsElement(root.evalNode("environments"));
+      //解析databaseIdProvider结点
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       typeHandlerElement(root.evalNode("typeHandlers"));
       mapperElement(root.evalNode("mappers"));

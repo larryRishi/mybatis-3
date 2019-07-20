@@ -38,13 +38,21 @@ import org.apache.ibatis.reflection.SystemMetaObject;
  * @author Clinton Begin
  */
 public class CacheBuilder {
+  //cache对象的唯一标识,一般情况下对应配置文件中的namespace属性
   private final String id;
+  //cache接口的真正实现类
   private Class<? extends Cache> implementation;
+  //装饰器集合，默认只包含LruCache.class
   private final List<Class<? extends Cache>> decorators;
+  //Cache大小
   private Integer size;
+  //清理时间周期
   private Long clearInterval;
+  //是否可读
   private boolean readWrite;
+  //是否阻塞
   private Properties properties;
+  //其他配置信息
   private boolean blocking;
 
   public CacheBuilder(String id) {
@@ -95,6 +103,7 @@ public class CacheBuilder {
     setCacheProperties(cache);
     // issue #352, do not apply decorators to custom caches
     if (PerpetualCache.class.equals(cache.getClass())) {
+      //装饰cache
       for (Class<? extends Cache> decorator : decorators) {
         cache = newCacheDecoratorInstance(decorator, cache);
         setCacheProperties(cache);
